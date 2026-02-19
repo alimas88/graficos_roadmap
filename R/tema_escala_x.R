@@ -1,5 +1,9 @@
-
-
+#' Gera tema comum e escala do eixo x para os gráficos
+#'
+#' @returns Uma lista com `tema_comum` e `escala_x_tempo`
+#' @export
+#'
+#' @examples
 tema_escala <- function() {
 
   tema_comum <- theme_minimal() +
@@ -48,7 +52,7 @@ tema_escala <- function() {
   )
 
   return(list(
-    escala_x_tempo = escala_x_tempo,
-    tema_comum = tema_comum
+    tema_comum = tema_comum,
+    escala_x_tempo = escala_x_tempo
   ))
 }

@@ -7,10 +7,10 @@
 #'   \item colunas empilhadas em participação relativa (% do total).
 #' }
 #'
-#' O eixo temporal é anual e termina em 31/12/2024 por padrão.
+#' O eixo temporal é fixo de 01/01/2000 até 31/12/2024.
 #'
-#' @param ano_inicio Ano inicial para exibição dos gráficos.
-#' @param data_fim Data final da série (padrão: "2024-12-31").
+#' @param tema_comum Tema ggplot aplicado aos gráficos.
+#' @param escala_x_tempo Detalhes para escala do eixo x
 #'
 #' @return Uma lista com `dados`, `grafico_absoluto` e `grafico_participacao`.
 #' @export
@@ -21,8 +21,12 @@
 #' resultado$grafico_absoluto
 #' resultado$grafico_participacao
 #' }
-evolucao_capacidade_instalada <- function(ano_inicio = 2000,
-                                          data_fim = as.Date("2024-12-31")) {
+evolucao_capacidade_instalada <- function(tema_comum, escala_x_tempo) {
+  data_inicio <- as.Date("2000-01-01")
+  data_fim <- as.Date("2024-12-31")
+  ano_inicio <- lubridate::year(data_inicio)
+  ano_fim <- lubridate::year(data_fim)
+
   cap_inst_ons <- readr::read_delim(
     "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/capacidade-geracao/CAPACIDADE_GERACAO.csv",
     delim = ";",
@@ -33,10 +37,20 @@ evolucao_capacidade_instalada <- function(ano_inicio = 2000,
   gd <- tibble::tibble(
     ano = 2015:2024,
     nom_tipousina = "GD",
-    potencia = c(17, 72, 246, 670, 2162, 4768, 8965, 17325, 26627, 36168)
+    potencia = c(
+      17, 72, 246, 670, 2162,
+      4768, 8965, 17325, 26627, 36168
+    )
   )
 
-  ano_fim <- lubridate::year(data_fim)
+  ordem_usinas <- c(
+    "HIDROELÉTRICA",
+    "TÉRMICA",
+    "NUCLEAR",
+    "EÓLICA",
+    "FOTOVOLTAICA",
+    "GD"
+  )
 
   cap_por_ano <- cap_inst_ons |>
     dplyr::mutate(
@@ -61,15 +75,8 @@ evolucao_capacidade_instalada <- function(ano_inicio = 2000,
     dplyr::filter(ano >= ano_inicio, ano <= ano_fim) |>
     dplyr::mutate(
       nom_tipousina = dplyr::recode(nom_tipousina, "EOLIELÉTRICA" = "EÓLICA"),
-      nom_tipousina = forcats::fct_relevel(
-        nom_tipousina,
-        "HIDROELÉTRICA",
-        "TÉRMICA",
-        "NUCLEAR",
-        "EÓLICA",
-        "FOTOVOLTAICA",
-        "GD"
-      ),
+      nom_tipousina = factor(nom_tipousina, levels = ordem_usinas),
+      # nom_tipousina = forcats::fct_rev(nom_tipousina),
       ano_data = as.Date(sprintf("%s-12-31", ano))
     )
 
@@ -83,27 +90,26 @@ evolucao_capacidade_instalada <- function(ano_inicio = 2000,
   )
 
   escala_tempo <- ggplot2::scale_x_date(
-    limits = c(as.Date(sprintf(
-      "%s-01-01", ano_inicio
-    )), data_fim),
+    limits = c(data_inicio, data_fim),
     date_breaks = "2 years",
     date_labels = "%Y",
     expand = ggplot2::expansion(mult = c(0, 0))
   )
 
-  grafico_absoluto <- ggplot2::ggplot(cap_por_ano,
-                                      ggplot2::aes(x = ano_data, y = potencia / 1000, fill = nom_tipousina)) +
-    ggplot2::geom_area(color = "white",
-                       linewidth = 0.25,
-                       alpha = 0.95) +
-    ggplot2::scale_fill_manual(values = pal_usinas, drop = FALSE) +
-    escala_tempo +
+  grafico_absoluto <- ggplot2::ggplot(
+    cap_por_ano,
+    ggplot2::aes(x = ano_data, y = potencia / 1000, fill = nom_tipousina)
+  ) +
+    ggplot2::geom_area(
+      color = "white",
+      linewidth = 0.25,
+      alpha = 0.95,
+      position = ggplot2::position_stack(reverse = TRUE)
+    ) +
+    ggplot2::scale_fill_manual(values = pal_usinas, breaks = ordem_usinas, drop = FALSE) +
+    escala_x_tempo +
     ggplot2::scale_y_continuous(
-      labels = scales::label_number(
-        big.mark = ".",
-        decimal.mark = ",",
-        accuracy = 1
-      ),
+      labels = scales::label_number(big.mark = ".", decimal.mark = ",", accuracy = 1),
       expand = ggplot2::expansion(mult = c(0, 0.02))
     ) +
     ggplot2::labs(
@@ -112,19 +118,20 @@ evolucao_capacidade_instalada <- function(ano_inicio = 2000,
       y = "Capacidade instalada (GW)",
       fill = "Tipo de usina"
     ) +
-    ggplot2::theme_minimal(base_size = 12)
+    tema_comum
 
-  grafico_participacao <- ggplot2::ggplot(cap_por_ano,
-                                          ggplot2::aes(x = ano_data, y = potencia, fill = nom_tipousina)) +
-
+  grafico_participacao <- ggplot2::ggplot(
+    cap_por_ano,
+    ggplot2::aes(x = ano_data, y = potencia, fill = nom_tipousina)
+  ) +
     ggplot2::geom_col(
-      position = "fill",
+      position = ggplot2::position_fill(reverse = TRUE),
       width = 300,
       color = "white",
       linewidth = 0.2
     ) +
-    ggplot2::scale_fill_manual(values = pal_usinas, drop = FALSE) +
-    escala_tempo +
+    ggplot2::scale_fill_manual(values = pal_usinas, breaks = ordem_usinas, drop = FALSE) +
+    escala_x_tempo +
     ggplot2::scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
     ggplot2::labs(
       title = "Participação da Capacidade Instalada por Tipo de Usina",
@@ -132,7 +139,7 @@ evolucao_capacidade_instalada <- function(ano_inicio = 2000,
       y = "Participação no total (%)",
       fill = "Tipo de usina"
     ) +
-    ggplot2::theme_minimal(base_size = 12)
+    tema_comum
 
   list(
     dados = cap_por_ano,
