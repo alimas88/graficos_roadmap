@@ -75,7 +75,7 @@ Essa dependência torna o sistema especialmente sensível a eventos climáticos,
 fig_capacidade(capacidade, crises) |> interativo(altura = 5.2, apagar_demais = TRUE)
 ```
 
-Evolução da capacidade instalada do SIN por tipo de usina, 2000–2024. Fontes: ONS, capacidade de geração; GD: [EPE, BEN]{.verificar title="conferir edição e tabela do BEN da série de GD (dados/gd.csv)"} [@epe2025ben].
+Evolução da capacidade instalada do SIN por tipo de usina, 2000–2024. Fontes: ONS, capacidade de geração; GD: EPE, Painel de Dados de Micro e Minigeração Distribuída, a partir da base da ANEEL (atualização de mar/2026).
 :::
 
 ## 2001: crise de oferta em um sistema pouco integrado {#sec-2001}
