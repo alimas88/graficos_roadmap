@@ -70,7 +70,9 @@ fig_capacidade <- function(capacidade, crises, inicio = "2000-01-01", fim = "202
   ggplot(d, aes(data, valor, fill = tipo)) +
     camada_crises(crises) +
     geom_col_interactive(
-      aes(tooltip = tooltip, data_id = id),
+      # group explícito: sem ele o ggplot agrupa também pelo tooltip (texto
+      # único por barra) e a pilha sai na ordem alfabética do tooltip
+      aes(tooltip = tooltip, data_id = id, group = tipo),
       position = position_stack(),
       width = 300, colour = "white", linewidth = 0.15
     ) +

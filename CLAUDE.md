@@ -71,6 +71,7 @@ Datas novas entram no CSV, com a fonte na coluna `fonte_data`.
 - Pontos de hover usam `colour = <cor>` com `alpha = 0.01`. Com `colour = NA` o ggplot descarta os pontos como ausentes, e com `alpha = 0` o ggiraph não os desenha.
 - `data_id` com o mês (`as.character(mes)`) acende o mesmo mês em todos os painéis; o CMO semanal usa `floor_date(semana, "month")` como id.
 - O realce de hover é separado por tipo em `opts_hover(css = girafe_css(...))`: os pontos acendem e as faixas (`area`) só ganham contorno.
+- Em geoms empilhados (`position_stack`), passe `group = <variável do fill>` no `aes()`. `tooltip` e `data_id` são estéticas discretas e entram no agrupamento; com tooltip único por elemento, a pilha sai na ordem alfabética do texto.
 - Datas vindas do ONS como data-hora (POSIXct) são convertidas com `as_date()` antes de `scale_x_date`.
 
 ## Texto da NT
