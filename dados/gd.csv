@@ -1,11 +1,14 @@
-ano,potencia_mw,fonte
-2015,17,"EPE, BEN (planilhas): capacidade instalada de micro e minigeração distribuída; conferir edição e tabela"
-2016,72,"EPE, BEN (planilhas): capacidade instalada de micro e minigeração distribuída; conferir edição e tabela"
-2017,246,"EPE, BEN (planilhas): capacidade instalada de micro e minigeração distribuída; conferir edição e tabela"
-2018,670,"EPE, BEN (planilhas): capacidade instalada de micro e minigeração distribuída; conferir edição e tabela"
-2019,2162,"EPE, BEN (planilhas): capacidade instalada de micro e minigeração distribuída; conferir edição e tabela"
-2020,4768,"EPE, BEN (planilhas): capacidade instalada de micro e minigeração distribuída; conferir edição e tabela"
-2021,8965,"EPE, BEN (planilhas): capacidade instalada de micro e minigeração distribuída; conferir edição e tabela"
-2022,17325,"EPE, BEN (planilhas): capacidade instalada de micro e minigeração distribuída; conferir edição e tabela"
-2023,26627,"EPE, BEN (planilhas): capacidade instalada de micro e minigeração distribuída; conferir edição e tabela"
-2024,36168,"EPE, BEN (planilhas): capacidade instalada de micro e minigeração distribuída; conferir edição e tabela"
+ano,potencia_adicionada_mw
+2013,2.50922
+2014,2.71325
+2015,15.03116
+2016,61.76629
+2017,151.70812
+2018,427.6038
+2019,1585.27158
+2020,2934.0079
+2021,4609.36748
+2022,8032.98711
+2023,8392.89115
+2024,10005.40226
+2025,8818.76926

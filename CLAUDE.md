@@ -17,7 +17,8 @@ R/                      # funções, carregadas pelo setup do .qmd
   fig_<tema>.R          # preparar_*() + fig_*() de cada figura
 dados/
   crises.csv            # faixas de crise (versionado)
-  gd.csv                # GD anual do BEN (fora do cadastro do ONS)
+  gd.csv                # GD adicionada por ano (EPE/ANEEL), fora do cadastro do ONS
+  fontes.md             # fonte e metadados de cada arquivo local de dados/
   cache/                # parquet do ONS (não versionado)
 referencias.bib  estilo.css  DESCRIPTION  graficos.roadmap.Rproj
 ```
@@ -40,7 +41,7 @@ referencias.bib  estilo.css  DESCRIPTION  graficos.roadmap.Rproj
 - Leves (ENA, EAR, capacidade de geração): `cache_ons()`, arquivo único com todas as colunas.
 - Pesados (geração horária `geracao_usina_2_ho`, CMO `cmo_se`): `atualizar_cache_incremental()` agrega cada arquivo de origem com SQL no DuckDB e grava só o agregado, um parquet por arquivo de origem. Os arquivos são anuais até 2021 e mensais a partir de 2022. A agregação é local: o DuckDB baixa só as colunas usadas, sem gravar o bruto.
 - A robustez a falhas de rede é parte do desenho: timeout HTTP de 10 min com retries, gravação em `.tmp` + rename, download completo como alternativa, e falha de um arquivo sem interromper os demais. Preserve isso ao mexer em `R/dados_ons.R`.
-- Arquivos locais do usuário (desligamentos em xlsx, limites de intercâmbio digitalizados de figura da EPE, ondas de calor do INMET) entram em `dados/` com caminho relativo ao projeto e fonte registrada.
+- Arquivos locais do usuário (desligamentos em xlsx, limites de intercâmbio digitalizados de figura da EPE, ondas de calor do INMET) entram em `dados/` com caminho relativo ao projeto e fonte registrada em `dados/fontes.md`.
 
 ## Faixas de crise
 
@@ -79,7 +80,7 @@ Tom técnico e impessoal, citações `[@chave]` de `referencias.bib`, referênci
 ## Pendências
 
 - Figuras ainda em quadro reservado: extensão de LTs + intercâmbio, EARmax/carga (métrica do PEN), comparação das três crises, desligamentos por causa e subsistema, ENS, robustez, carga e ondas de calor.
-- Capacidade instalada: estoque em 31/12 a partir do cadastro atual do ONS (desativações antigas podem faltar, subestimando 2000–2002); conferir edição/tabela do BEN da série de GD.
+- Capacidade instalada: estoque em 31/12 a partir do cadastro atual do ONS (desativações antigas podem faltar, subestimando 2000–2002); GD do painel da EPE (potência CA ou CC a confirmar). Empilhamento da base ao topo em `ordem_usinas` (hidro → GD).
 - Limites de intercâmbio: sem série do ONS; digitalizar da figura da EPE (referência a completar).
 - Critério de onda de calor (INMET) ainda a definir com o usuário.
 - Saída só em HTML por enquanto; DOCX/PDF fora do escopo.
