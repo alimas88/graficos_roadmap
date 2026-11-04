@@ -4,10 +4,33 @@ Documento Quarto (`contexto_setorial.qmd`) que mescla o texto da Nota Técnica c
 
 Responda e comente em português. Antes de mudar uma figura, leia o arquivo `R/fig_*.R` dela e as funções comuns em `R/tema.R` e `R/crises.R`.
 
+## Estrutura
+
+```
+contexto_setorial.qmd   # texto da NT + chamadas das figuras
+atualizar_dados.R       # baixa/atualiza o cache do ONS (rede)
+R/                      # funções, carregadas pelo setup do .qmd
+  00_pacotes.R          # library() dos pacotes do documento
+  tema.R                # tema, escalas, paletas, formatos, interativo()
+  crises.R              # ler_crises(), camada_crises(), legendas
+  dados_ons.R           # leitura do ONS e cache em parquet
+  fig_<tema>.R          # preparar_*() + fig_*() de cada figura
+dados/
+  crises.csv            # faixas de crise (versionado)
+  cache/                # parquet do ONS (não versionado)
+referencias.bib  estilo.css  DESCRIPTION  graficos.roadmap.Rproj
+```
+
+- Projeto Quarto comum, não é pacote: sem roxygen, `NAMESPACE` ou `@export`. O `DESCRIPTION` só lista dependências (`pak::local_install_deps()`); pacote novo usado no código entra nele.
+- Caminhos relativos à raiz do projeto (diretório de trabalho do `.Rproj` e do render).
+- Não versionar: `dados/cache/`, `*.parquet`, `*.html`, `*_files/`, `*.rmarkdown` (já no `.gitignore`).
+- Figura nova: criar `R/fig_<tema>.R` com `preparar_*()` (dados) e `fig_*()` (ggplot), preparar os dados no bloco `setup` e substituir o `.fig-placeholder` correspondente no `.qmd`, mantendo o id `#fig-...` e a legenda.
+- Código anterior à reorganização (capacidade instalada, transmissão, geração por fonte, `graficos_gerais_contexto.R`) está no histórico: `git show df4d487^:"R/<arquivo>.R"`. Serve de referência, mas segue a estrutura e as convenções atuais.
+
 ## Como roda
 
 - `source("atualizar_dados.R")` no console baixa dados do ONS para `dados/cache/`. É o único passo que usa rede.
-- O render (`quarto render contexto_setorial.qmd`) só lê o cache. Os datasets pesados vêm de `ler_cache_incremental()`, que completa o cache sozinha só quando falta o `_manifesto.csv`.
+- O render (`quarto render contexto_setorial.qmd`) só lê o cache. Os datasets pesados vêm de `ler_cache_incremental()`, que só acessa a rede se o cache estiver incompleto (sem `_manifesto.csv` ou com algum arquivo listado nele ausente).
 - O bloco `setup` do `.qmd` carrega todos os `R/*.R` em ordem alfabética (`00_pacotes.R` primeiro) e prepara os dados. Cada figura é uma função `fig_*()` chamada num bloco curto, envolvida em `interativo()`.
 
 ## Dados
@@ -38,6 +61,7 @@ Datas novas entram no CSV, com a fonte na coluna `fonte_data`.
 - Tema `tema_nt()`; eixo de tempo `escala_x_tempo()` (2000–2024, passo de 4 anos); legenda no rodapé. Séries mais curtas que a janela (CMO desde 2005, ENS desde 2007, desligamentos desde 2014) levam aviso na legenda.
 - Cor principal `#08519C`; paletas `pal_usinas` e `paleta_tensao` em `R/tema.R`. Subsistemas na ordem SUDESTE, NORDESTE, SUL, NORTE, com rótulos de `rotulo_subsistema`.
 - Métodos fixados: ENA mensal = ENA média / MLT média do mês; EAR = último dia do mês; EAR do SIN = soma verificada / soma máxima; geração = soma das usinas por hora dividida pelas horas do mês, sem BOMBEAMENTO, em GWmed.
+- Figuras ainda não implementadas ficam em `::: fig-placeholder` com **Conteúdo**, **Dados** e **Interatividade**, dentro do bloco `#fig-...` com a legenda final.
 - Subsistemas em abas (`::: {.panel-tabset}`) dentro do bloco `#fig-...`, com a legenda da figura após as abas. Painéis alinhados no tempo em `facet_wrap(ncol = 1)` substituem eixo duplo.
 
 ## ggiraph: armadilhas já resolvidas
