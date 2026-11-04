@@ -1,6 +1,15 @@
+# RStudio / R
 .Rproj.user
 .Rhistory
 .RData
 .httr-oauth
 .DS_Store
-.quarto
+
+# Quarto
+.quarto/
+*_files/
+*.rmarkdown
+contexto_setorial.html
+
+# cache dos dados do ONS (regenerado por atualizar_dados.R)
+dados/cache/
