@@ -1,0 +1,5 @@
+crise,inicio,fim,tipo,camada,rotulo,fonte_data
+2001,2001-06-01,2002-02-28,energia,crise,Racionamento 2001,"E+ (2024): GCE e racionamento em jun/2001; programa suspenso em mar/2002 após nove meses"
+2012-2016,2012-10-01,2016-03-31,energia,crise,Crise 2012–2016,"E+ (2024): 'a rigor, outubro de 2012 a março de 2016'; 42 meses"
+2021,2020-10-01,2022-04-30,hibrida,crise,Crise 2021,"E+ (2024): térmica fora do mérito desde out/2020; bandeira e incentivo à redução de consumo previstos até abr/2022; reservatórios recuperados no período úmido 2021–2022"
+periodo_critico,2012-06-01,2021-11-30,energia,periodo_critico,Período crítico (113 meses),"Texto da NT (EPE, 2023): jun/2012 a nov/2021, deplecionamento sem reenchimento pleno"

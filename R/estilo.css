@@ -1,0 +1,32 @@
+/* Estilo da NT — cor principal do projeto */
+:root {
+  --nt-azul: #08519C;
+  --nt-verificar: #fff3bf;
+  --nt-borda: #c9d6e8;
+  --nt-fundo-fig: #f4f7fb;
+}
+
+h1, h2, h3 { color: var(--nt-azul); }
+
+/* Trecho a conferir com a fonte ou com os dados */
+.verificar {
+  background: var(--nt-verificar);
+  border-bottom: 1px dashed #b08900;
+  padding: 0 2px;
+  cursor: help;
+}
+
+/* Bloco reservado para a figura */
+.fig-placeholder {
+  border: 1px dashed var(--nt-borda);
+  border-left: 4px solid var(--nt-azul);
+  background: var(--nt-fundo-fig);
+  padding: 0.9rem 1.1rem;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  text-align: left;
+}
+.fig-placeholder p { margin-bottom: 0.45rem; }
+.fig-placeholder p:last-child { margin-bottom: 0; }
+
+table { font-size: 0.92rem; }
