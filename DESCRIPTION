@@ -1,13 +1,25 @@
+Type: Project
 Package: graficos.roadmap
-Title: What the Package Does (One Line, Title Case)
+Title: Figuras da Nota Técnica do Roadmap de Resiliência do SEB
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Description: Documento Quarto com as figuras de contexto setorial e
+    climático, a partir dos dados abertos do ONS. Este arquivo serve apenas
+    para declarar dependências: pak::local_install_deps().
 Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
-URL: https://github.com/alimas88/graficos.roadmap
-BugReports: https://github.com/alimas88/graficos.roadmap/issues
+URL: https://github.com/alimas88/graficos_roadmap
+Imports:
+    arrow,
+    DBI,
+    dplyr,
+    duckdb,
+    forcats,
+    ggiraph,
+    ggplot2,
+    knitr,
+    lubridate,
+    readr,
+    rmarkdown,
+    scales,
+    stringr,
+    tibble,
+    tidyr
