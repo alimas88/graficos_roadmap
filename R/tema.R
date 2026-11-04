@@ -11,6 +11,15 @@ pal_usinas <- c(
   "GD"            = "#F29900"
 )
 
+rotulo_usina <- c(
+  "HIDROELÉTRICA" = "Hidrelétrica",
+  "TÉRMICA"       = "Térmica",
+  "NUCLEAR"       = "Nuclear",
+  "EÓLICA"        = "Eólica",
+  "FOTOVOLTAICA"  = "Fotovoltaica",
+  "GD"            = "GD"
+)
+
 paleta_tensao <- c(
   "800"     = "#0B4D6E",
   "765"     = "#000000",
@@ -79,8 +88,9 @@ escala_x_tempo <- function(inicio = "2000-01-01", fim = "2024-12-31", passo = "4
   )
 }
 
-# ggiraph no HTML; ggplot estático em qualquer outra saída
-interativo <- function(p, largura = 8, altura = 5) {
+# ggiraph no HTML; ggplot estático em qualquer outra saída.
+# apagar_demais = TRUE esmaece o que não tem o mesmo data_id (ex.: destacar uma fonte)
+interativo <- function(p, largura = 8, altura = 5, apagar_demais = FALSE) {
   if (!knitr::is_html_output()) return(p)
 
   girafe(
@@ -100,6 +110,8 @@ interativo <- function(p, largura = 8, altura = 5) {
         point = "fill:#08519C;fill-opacity:1;stroke:#ffffff;stroke-width:1px;",
         area  = "stroke:#7a7a7a;stroke-width:1.5px;"
       )),
+      opts_hover_inv(css = if (apagar_demais) "opacity:0.3;" else ""),
+      opts_hover_key(css = "stroke:#333333;stroke-width:1px;"),
       opts_toolbar(saveaspng = TRUE, position = "topright"),
       opts_sizing(rescale = TRUE)
     )

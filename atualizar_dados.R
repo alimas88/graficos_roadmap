@@ -10,6 +10,7 @@ for (arquivo in list.files("R", pattern = "\\.R$", full.names = TRUE)) source(ar
 # leves: baixados inteiros
 cache_ons("ena_subsistema_di", atualizar = TRUE)
 cache_ons("ear_subsistema_di", atualizar = TRUE)
+cache_ons("capacidade-geracao", padrao = "CAPACIDADE_GERACAO.csv", atualizar = TRUE)
 
 # pesados: só o agregado; reprocessa o último arquivo (o ONS pode revisar o mês corrente)
 atualizar_cache_incremental("geracao_usina_2_ho", sql_geracao_mensal, nome = "geracao_mensal")

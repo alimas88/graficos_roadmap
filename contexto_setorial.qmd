@@ -41,6 +41,11 @@ crises <- ler_crises("dados/crises.csv")
 ena_di <- cache_ons("ena_subsistema_di")
 ear_di <- cache_ons("ear_subsistema_di")
 
+capacidade <- preparar_capacidade(
+  cache_ons("capacidade-geracao", padrao = "CAPACIDADE_GERACAO.csv"),
+  ler_gd("dados/gd.csv")
+)
+
 ena_ear <- juntar_ena_ear(
   preparar_ena_mensal(ena_di),
   preparar_ear_mensal(ear_di)
@@ -65,15 +70,12 @@ A matriz elétrica brasileira é majoritariamente renovável e fortemente depend
 Essa dependência torna o sistema especialmente sensível a eventos climáticos, que moldaram, ao longo do tempo, sua trajetória de resiliência e aprimoramento operacional. Compreender a resiliência do Sistema Interligado Nacional (SIN) exige, portanto, analisar como o sistema reagiu aos principais eventos climáticos sob a ótica da oferta, do armazenamento, da rede de transmissão e da demanda. Essa leitura fornece a base para identificar vulnerabilidades, impactos sofridos e medidas de adaptação adotadas, bem como os avanços institucionais, operacionais e estruturais que conformaram o sistema atual (@fig-capacidade).
 
 ::: {#fig-capacidade}
-::: fig-placeholder
-**Conteúdo.** Dois painéis lado a lado: (a) capacidade instalada por tipo de usina, em GW, área empilhada; (b) participação percentual de cada fonte. Hidro, térmica, nuclear, eólica, fotovoltaica e GD, com faixas das crises ao fundo.
+```{r}
+#| label: capacidade
+fig_capacidade(capacidade, crises) |> interativo(altura = 5.2, apagar_demais = TRUE)
+```
 
-**Dados.** ONS, `CAPACIDADE_GERACAO.csv` (entrada e desativação, série anual completa 2000–2024); GD do BEN 2015–2024 em arquivo próprio.
-
-**Interatividade.** Valor por fonte e ano ao passar o mouse; clique na legenda destaca uma fonte.
-:::
-
-Evolução da capacidade instalada do SIN por fonte, 2000–2024. Faixas cinzas indicam períodos aproximados das crises no setor.
+Evolução da capacidade instalada do SIN por tipo de usina, 2000–2024. Fontes: ONS, capacidade de geração; GD: [EPE, BEN]{.verificar title="conferir edição e tabela do BEN da série de GD (dados/gd.csv)"} [@epe2025ben].
 :::
 
 ## 2001: crise de oferta em um sistema pouco integrado {#sec-2001}
