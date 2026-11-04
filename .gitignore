@@ -1,15 +1,22 @@
 # RStudio / R
-.Rproj.user
+.Rproj.user/
 .Rhistory
 .RData
+.Ruserdata
 .httr-oauth
-.DS_Store
 
-# Quarto
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Quarto (saídas e intermediários do render)
 .quarto/
 *_files/
 *.rmarkdown
-contexto_setorial.html
+*.html
 
-# cache dos dados do ONS (regenerado por atualizar_dados.R)
-dados/cache/
+# Dados baixados/derivados do ONS (regenerados por atualizar_dados.R)
+**/dados/cache/
+*.parquet
+*.tmp
